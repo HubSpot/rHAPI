@@ -20,3 +20,6 @@ pkg
 # For TextMate
 *.tmproj
 tmtags
+
+#api key info
+keys.txt
