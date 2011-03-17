@@ -1,3 +1,4 @@
-h1. rHAPI
+rHAPI
+=====
 
 A wrapper for the HubSpot API (HAPI)
