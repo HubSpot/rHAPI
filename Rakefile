@@ -25,7 +25,7 @@ Jeweler::Tasks.new do |gem|
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
   gem.add_runtime_dependency 'curb', '~> 0.7.12'
   gem.add_runtime_dependency 'json', '~> 1.5.1'
-  gem.add_runtime_dependency 'activesupport', '~> 3.0.5'
+  gem.add_runtime_dependency 'activesupport', '>= 0'
 end
 Jeweler::RubygemsDotOrgTasks.new
 

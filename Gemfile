@@ -4,7 +4,7 @@ source "http://rubygems.org"
 #   gem "activesupport", ">= 2.3.5"
 gem "curb", "~> 0.7.12"
 gem "json", '~> 1.5.1'
-gem "activesupport", '~> 3.0.5'
+gem "activesupport", '>= 0'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.

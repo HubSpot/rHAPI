@@ -15,3 +15,23 @@ end
 def test_config
   YAML::load( File.open( 'spec/config.yml' ) )
 end
+
+def test_leads
+  IO.read( 'spec/fixtures/leads.json' )
+end
+
+def test_error
+  IO.read( 'spec/fixtures/error.html' )
+end
+
+def stub_leads_search
+  @data = mock("data")
+  @data.stub!(:body_str).and_return(test_leads) 
+  Curl::Easy.stub!(:perform).and_return(@data)
+end
+
+def stub_leads_error
+  @data = mock("data")
+  @data.stub!(:body_str).and_return(test_error) 
+  Curl::Easy.stub!(:perform).and_return(@data)
+end
