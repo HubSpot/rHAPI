@@ -9,13 +9,13 @@ RHapi is a Ruby wrapper for the HubSpot API (HAPI).
 
 == Using RHapi 
 
-First configure RHapi to work with your Hubspot API Key
+First configure RHapi to work with your Hubspot API Key.
 
   RHapi.configure do |config|
     config.api_key = "YOUR_API_KEY"
   end
 
-Then to get a list of leads:
+Then to get a list of leads.
   leads = RHapi::Lead.find
   leads.each do |lead|
     puts lead.first_name
@@ -25,10 +25,10 @@ Then to get a list of leads:
     puts lead.guid
   end
 
-To find leads named Barny
+To find leads named Barny.
   leads = RHapi::Lead.find("Barny")
 
-To update a lead
+To update a lead.
   lead = leads.fist
   lead.first_name = "Fred"
   lead.last_name  = "Flintsone"
