@@ -6,6 +6,7 @@ describe "Configuration" do
       config.api_key = "123"
       config.end_point = "https://mysite.com"
       config.hub_spot_site = "http://mysite.hubspot.com"
+      config.version = "v2"
     end
   end
   
@@ -21,10 +22,15 @@ describe "Configuration" do
     RHapi.options[:hub_spot_site].should == "http://mysite.hubspot.com"
   end
   
+  it "sets the version" do
+    RHapi.options[:version].should == "v2"
+  end
+  
   it "resets to the default values" do
     RHapi.reset
     RHapi.options[:api_key].should == nil
     RHapi.options[:end_point].should == "https://hubapi.com"
     RHapi.options[:hub_spot_site].should == nil
+    RHapi.options[:version].should == "v1"
   end
 end
