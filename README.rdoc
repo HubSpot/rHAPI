@@ -25,7 +25,7 @@ First configure RHapi to work with your Hubspot API Key
     puts lead.guid
   end
 
-# To find leads named Fred
+# To find leads named Barny
   leads = RHapi::Lead.find("Barny")
 
 # To update a lead
