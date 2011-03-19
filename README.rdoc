@@ -4,7 +4,8 @@ RHapi is a Ruby wrapper for the HubSpot API (HAPI).
 
 == To do:
 
-* Build out methods for Blogs API
+* Add method to create new leads.
+* Build out methods for Blogs API.
 * Write documentation.
 
 == Using RHapi 
