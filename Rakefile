@@ -16,7 +16,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/timstephenson/rHAPI"
   gem.license = "MIT"
   gem.summary = %Q{A ruby wrapper for the HubSpot API (HAPI).}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.description = %Q{Makes it easy to use the HubSpot API in a Ruby application.}
   gem.email = "tim@raddonline.com"
   gem.authors = ["Tim Stephenson of RaddOnline"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,

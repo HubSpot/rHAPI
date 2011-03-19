@@ -13,8 +13,14 @@ module RHapi
     end
     
     # Class methods ----------------------------------------------------------
+    
+    # Finds leads and returns an array of leads. 
+    # An optional string value that is used to search several basic lead fields: first name, last name, email address, 
+    # and company name. According to HubSpot docs, a more advanced search is coming in the future. 
+    # The default value for is nil, meaning return all leads.
     def self.find(search=nil)
-      data = Curl::Easy.perform("#{RHapi.options[:end_point]}/leads/#{RHapi.options[:version]}/list?hapikey=#{RHapi.options[:api_key]}&search=#{search}")
+      url = "#{RHapi.options[:end_point]}/leads/#{RHapi.options[:version]}/list?hapikey=#{RHapi.options[:api_key]}&search=#{search}"
+      data = Curl::Easy.perform(url)
       RHapi::RHapiException.raise_error(data.body_str) if data.body_str =~ /Error/i
       lead_data = JSON.parse(data.body_str)
       leads = []
@@ -25,6 +31,7 @@ module RHapi
       leads
     end
     
+    # Finds specified lead by the guid.
     def self.find_by_guid(guid)
       url = "#{RHapi.options[:end_point]}/leads/#{RHapi.options[:version]}/lead/#{guid}?hapikey=#{RHapi.options[:api_key]}"
       c = Curl::Easy.perform(url)
