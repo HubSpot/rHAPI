@@ -9,6 +9,7 @@ module RHapi
     attr_accessor *VALID_OPTIONS_KEYS
     
     def configure
+      self.reset
       yield self
     end
     
