@@ -43,19 +43,20 @@ module RHapi
     end
     
     # Instance methods -------------------------------------------------------
-    def update
-      # url = "#{RHapi.options[:end_point]}/leads/#{RHapi.options[:version]}/lead/#{self.guid}?hapikey=#{RHapi.options[:api_key]}"
-      # data = self.changed_attributes.to_json
-      # response = Curl::Easy.http_put(url, data) do |curl| 
-      #   curl.headers["Content-Type"] = "application/json"
-      #   curl.header_in_body = true
-      #   curl.on_failure do |response, err|
-      #     RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
-      #   end
-      # end
-      # RHapi::ConnectionError.raise_error(response.body_str) unless response.body_str =~ /2\d\d/
+    def update(params={})
+      update_attributes(params) unless params.empty?
       response = Lead.put(Lead.url_for("lead", self.guid), self.changed_attributes)
       true
+    end
+    
+    def update_attributes(params)
+      raise(RHapi::AttributeError, "The params must be a hash.") unless params.is_a?(Hash)
+      params.each do |key, value|
+        attribute = ActiveSupport::Inflector.camelize(key.to_s, false)
+        raise(RHapi::AttributeError, "No Hubspot attribute with the name #{attribute}.") unless self.attributes.include?(attribute)
+        self.changed_attributes[attribute] = value
+        self.attributes[attribute] = value
+      end
     end
     
     

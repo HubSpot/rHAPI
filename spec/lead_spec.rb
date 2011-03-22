@@ -96,6 +96,18 @@ describe "RHapi::Lead" do
       lead.update.should == true
     end
     
+    it "should have a list of changed attributes when updating with a params hash" do
+      stub_lead_update
+      leads = RHapi::Lead.find
+      lead = leads.first
+      lead.update({:first_name => "Wilma", :last_name => "Flintstone", :city => "Bedrock", :state => "CA"}).should == true
+      lead.changed_attributes.length.should == 4
+      lead.changed_attributes["firstName"].should == "Wilma"
+      lead.changed_attributes["firstName"].should == "Wilma"
+      lead.changed_attributes["city"].should == "Bedrock"
+      lead.changed_attributes["state"].should == "CA"
+    end
+    
     it "should raise an error if 200 is not returned" do
       leads = RHapi::Lead.find
       lead = leads.first

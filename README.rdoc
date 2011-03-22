@@ -4,8 +4,6 @@ RHapi is a Ruby wrapper for the HubSpot API (HAPI).
 
 == To do:
 
-* Add sort, direction, max and offset options to the find method.
-* Change update method so that a lead can be updated by passing a params hash.
 * Add method to create new leads.
 * Build out methods for Blogs API.
 * Write documentation.
@@ -37,12 +35,33 @@ Then to get a list of leads.
 
 To find leads named Barny.
   leads = RHapi::Lead.find("Barny")
+  
+You can also pass additional options to the find method.
+  options = {
+    :sort       => "lastName",          # Possible sort values include: firstName, lastName, email, address, phone, insertedAt, lastConvertedAt, lastModifiedAt, closedAt
+    :dir        => "asc",               # Use desc for descending.
+    :max        => 25,                  # Maximum value is 100
+    :offset     => 50,                  # Used in combination with max for paging results. 
+    :startTime  => 1298721462000,       # Expressed as milliseconds since epoch time. Returned list will have only leads inserted after this time. Default is 0 and returns all leads up to max.
+    :stopTime   => 1298721462000,       # Expressed as milliseconds since epoch time. 
+    :timePivot  => "insertedAt",        # The field the start and stop times should be applied to in the search. Can be: insertedAt, firstConvertedAt, lastConvertedAt, lastModifiedAt, closedAt.
+    :excludeConversionEvents => false,  # Used to exclude all items in the leadConversionEvents collection from the API results.
+    :optout                  => false,  # Set to true to include only leads that have unsubscribed from lead nurturing. The default value, false, includes all leads. 
+    :eligibleForEmail        => false,  # Set to true to include only leads eligible for email marketing.
+    :bounced                 => false,  # Set to true to include only leads that HubSpot has tried to email, and the email bounced. The default value, false, includes all leads.
+    :notImported             => false  # Set to true to include only web leads. The default value, false, includes both imported and web leads.
+  }
+  leads = RHapi::Lead.find("Barny", options)
 
 To update a lead.
-  lead = leads.fist
+  lead = leads.first
   lead.first_name = "Fred"
   lead.last_name  = "Flintsone"
   lead.update
+  
+You can also pass a params hash to update a lead.
+params = {:first_name => "Fred", :last_name => "Flintstone", :city => "Bedrock"}
+lead.update(params)
 
 To get a single lead with a guid. Assumes the guid has be saved from a previous search.
   lead = RHapi::Lead.find_by_guid(lead.guid)

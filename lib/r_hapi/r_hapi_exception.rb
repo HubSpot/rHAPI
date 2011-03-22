@@ -25,7 +25,8 @@ module RHapi
     
   end
   
-  class UriError < TypeError
-  end
+  class UriError < TypeError; end
+  
+  class AttributeError < TypeError; end
   
 end
