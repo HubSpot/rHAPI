@@ -6,7 +6,7 @@ require File.expand_path('../connection', __FILE__)
 module RHapi
   
   class Lead
-    extend Connection
+    include Connection
     extend Connection::ClassMethods
     
     attr_accessor :attributes, :changed_attributes
@@ -45,7 +45,7 @@ module RHapi
     # Instance methods -------------------------------------------------------
     def update(params={})
       update_attributes(params) unless params.empty?
-      response = Lead.put(Lead.url_for("lead", self.guid), self.changed_attributes)
+      response = put(Lead.url_for("lead", self.guid), self.changed_attributes)
       true
     end
     

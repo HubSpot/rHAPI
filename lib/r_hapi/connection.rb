@@ -2,7 +2,21 @@ require 'curb'
 require 'json'
 module RHapi
   module Connection
-
+    
+    # Instance methods ---------------------------------------------------------------------------  
+      
+    def put(url, payload)
+      data = payload.to_json
+      response = Curl::Easy.http_put(url, data) do |curl| 
+        curl.headers["Content-Type"] = "application/json"
+        curl.on_failure do |response, err|
+          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
+        end
+      end
+      RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
+    end
+    
+    # Class methods -----------------------------------------------------------------------------
     
     module ClassMethods
     
@@ -35,18 +49,8 @@ module RHapi
         response
       end
       
-      def put(url, payload)
-        data = payload.to_json
-        response = Curl::Easy.http_put(url, data) do |curl| 
-          curl.headers["Content-Type"] = "application/json"
-          curl.on_failure do |response, err|
-            RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
-          end
-        end
-        RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
-      end
-      
     end # End class methods
+
     
   end
 end
