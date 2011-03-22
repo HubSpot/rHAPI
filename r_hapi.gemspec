@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{r_hapi}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tim Stephenson of RaddOnline"]
-  s.date = %q{2011-03-18}
+  s.date = %q{2011-03-22}
   s.description = %q{Makes it easy to use the HubSpot API in a Ruby application.}
   s.email = %q{tim@raddonline.com}
   s.extra_rdoc_files = [
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/r_hapi.rb",
     "lib/r_hapi/configuration.rb",
+    "lib/r_hapi/connection.rb",
     "lib/r_hapi/lead.rb",
     "lib/r_hapi/r_hapi_exception.rb",
     "r_hapi.gemspec",
