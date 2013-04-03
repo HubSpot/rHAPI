@@ -1,7 +1,8 @@
 module RHapi
   module Configuration
-    VALID_OPTIONS_KEYS = [:api_key, :end_point, :hub_spot_site, :version]
+    VALID_OPTIONS_KEYS = [:api_key, :access_token, :end_point, :hub_spot_site, :version]
     DEFAULT_API_KEY       = nil
+    DEFAULT_ACCESS_TOKEN  = nil
     DEFAULT_END_POINT     = "https://hubapi.com"
     DEFAULT_VERSION       = "v1"
     DEFAULT_HUB_SPOT_SITE = nil
@@ -21,6 +22,7 @@ module RHapi
    # Reset all configuration options to defaults
    def reset
      self.api_key              = DEFAULT_API_KEY
+     self.access_token         = DEFAULT_ACCESS_TOKEN
      self.end_point            = DEFAULT_END_POINT
      self.hub_spot_site        = DEFAULT_HUB_SPOT_SITE
      self.version              = DEFAULT_VERSION

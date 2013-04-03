@@ -20,10 +20,13 @@ module RHapi
     
     module ClassMethods
     
-      def url_for(method, id=nil, options={})
-        url = "#{RHapi.options[:end_point]}/leads/#{RHapi.options[:version]}/#{method}"
+      def url_for(api, method, id=nil, options={})
+        url = "#{RHapi.options[:end_point]}/#{api}/#{RHapi.options[:version]}/#{method}"
         url << "/#{id}" unless id.nil?
-        url << "?hapikey=#{RHapi.options[:api_key]}"
+        url << "?hapikey=#{RHapi.options[:api_key]}" if RHapi.options[:access_token].nil? or api.eql? 'leads'
+        else
+          url << "?access_token=#{RHapi.options[:access_token]}" # not all hubspot APIs support oAuth token calls 
+        end
         
         raise(RHapi::UriError, "Options must be a hash in order to build the url.") unless options.is_a?(Hash)
         url << append_options(options) unless options.empty?
