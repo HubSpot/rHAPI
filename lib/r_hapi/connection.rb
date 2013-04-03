@@ -24,6 +24,8 @@ module RHapi
         url = "#{RHapi.options[:end_point]}/#{api}/#{RHapi.options[:version]}/#{method}"
         url << "/#{id}" unless id.nil?
         if RHapi.options[:access_token].nil? or api.eql? 'leads'
+          if RHapi.options[:api_key].nil?
+            raise(RHapi::UriError, "Call to legacy api requires api key.") unless RHapi.options[:access_token].nil?
           url << "?hapikey=#{RHapi.options[:api_key]}"
         else
           url << "?access_token=#{RHapi.options[:access_token]}" # not all hubspot APIs support oAuth token calls 
