@@ -76,6 +76,11 @@ To get a single lead with a guid. Assumes the guid has be saved from a previous 
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
+== Changelog
+
+* Abstracted to allow for multiple api implementations (beyond just leads)
+* Accept oAuth access tokens and prefer them over api keys for non-legacy api calls
+
 == Copyright
 
 Copyright (c) 2011 Tim Stephenson. See LICENSE.txt for further details.
