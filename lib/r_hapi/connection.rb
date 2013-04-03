@@ -23,7 +23,8 @@ module RHapi
       def url_for(api, method, id=nil, options={})
         url = "#{RHapi.options[:end_point]}/#{api}/#{RHapi.options[:version]}/#{method}"
         url << "/#{id}" unless id.nil?
-        url << "?hapikey=#{RHapi.options[:api_key]}" if RHapi.options[:access_token].nil? or api.eql? 'leads'
+        if RHapi.options[:access_token].nil? or api.eql? 'leads'
+          url << "?hapikey=#{RHapi.options[:api_key]}"
         else
           url << "?access_token=#{RHapi.options[:access_token]}" # not all hubspot APIs support oAuth token calls 
         end
