@@ -1,6 +1,5 @@
 require 'curb'
 require 'json'
-require 'ostruct'
 module RHapi
   module Connection
     
@@ -27,19 +26,19 @@ module RHapi
         end
         url = "#{RHapi.options[:end_point]}"
         # unpack route -- define order to support ruby < 1.9
-        url << "/#{route.api}" unless route.api.nil?
-        if route.version.nil?
+        url << "/#{route[:api]}" unless route[:api].nil?
+        if route[:version].nil?
           url << "/#{RHapi.options[:version]}" 
         else
-          url << "/#{route.version}"
+          url << "/#{route[:version]}"
         end
-        url << "/#{route.resource}" unless route.resource.nil?
-        url << "/#{route.filter}" unless route.filter.nil?
-        url << "/#{route.identifier}" unless route.identifier.nil?
-        url << "/#{route.member}" unless route.member.nil?
-        url << "/#{route.context}" unless route.context.nil?
-        url << "/#{route.method}" unless route.method.nil?
-        if RHapi.options[:access_token].nil? or route.api.eql? 'leads'
+        url << "/#{route[:resource]}" unless route[:resource].nil?
+        url << "/#{route[:filter]}" unless route[:filter].nil?
+        url << "/#{route[:identifier]}" unless route[:identifier].nil?
+        url << "/#{route[:member]}" unless route[:member].nil?
+        url << "/#{route[:context]}" unless route[:context].nil?
+        url << "/#{route[:method]}" unless route[:method].nil?
+        if RHapi.options[:access_token].nil? or route[:api].eql? 'leads'
           if RHapi.options[:api_key].nil?
             raise(RHapi::ConfigError, "Call to legacy api requires api key.") unless RHapi.options[:access_token].nil?
           end
