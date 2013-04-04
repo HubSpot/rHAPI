@@ -1,5 +1,6 @@
 require 'curb'
 require 'json'
+require 'active_support/core_ext'
 module RHapi
   module Connection
     
