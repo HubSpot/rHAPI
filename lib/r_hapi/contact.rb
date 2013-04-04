@@ -26,7 +26,7 @@ module RHapi
       options[:q] = search unless search.nil?
       response = get(url_for({
         :api => 'contacts',
-        :resource => 'search'
+        :resource => 'search',
         :method => 'query'
       }, options))
  
