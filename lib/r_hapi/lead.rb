@@ -24,7 +24,10 @@ module RHapi
     # The default value for is nil, meaning return all leads.
     def self.find(search=nil, options={})  
       options[:search] = search unless search.nil?
-      response = get(url_for("leads", "list", nil, options))
+      response = get(url_for({
+        :api => 'leads',
+        :method => 'list'
+      }, options))
  
       lead_data = JSON.parse(response.body_str)
       leads = []
@@ -37,7 +40,11 @@ module RHapi
     
     # Finds specified lead by the guid.
     def self.find_by_guid(guid)
-      response = get(url_for("leads", "lead", guid))
+      response = get(url_for(
+        :api => 'leads',
+        :resource => 'lead',
+        :identifier => guid
+      ))
       lead_data = JSON.parse(response.body_str)
       Lead.new(lead_data)
     end
@@ -45,7 +52,11 @@ module RHapi
     # Instance methods -------------------------------------------------------
     def update(params={})
       update_attributes(params) unless params.empty?
-      response = put(Lead.url_for("leads", "lead", self.guid), self.changed_attributes)
+      response = put(Lead.url_for(
+        :api => 'leads',
+        :resource => 'lead',
+        :identifier => self.guid,
+      ), self.changed_attributes)
       true
     end
     
