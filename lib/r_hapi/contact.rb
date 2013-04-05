@@ -19,15 +19,8 @@ module RHapi
       
       attribute = ActiveSupport::Inflector.camelize(method.to_s, false)
   
-      if attribute =~ /=$/
-        attribute = attribute.chop
-        return super unless self.attributes.include?(attribute)
-        self.changed_attributes[attribute] = args[0]
-        self.attributes[attribute] = args[0]
-      else
-        return super unless self.attributes.include?(attribute)
-        self.attributes[attribute]
-      end 
+      return super unless self.attributes.include?(attribute)
+      self.attributes[attribute]
             
     end
   end
@@ -39,7 +32,8 @@ module RHapi
     attr_accessor :attributes, :changed_attributes
     
     def initialize(data)
-      self.attributes = data
+      self.read_only_members = data.slice!('properties') # Construct read-only attributes (e.g.: portal id)
+      self.attributes = data # Read-writable properties (e.g.: first & last name)
       self.changed_attributes = {}
     end
     
@@ -116,14 +110,17 @@ module RHapi
       
       attribute = ActiveSupport::Inflector.camelize(method.to_s, false)
   
-      if attribute =~ /=$/
+      if attribute =~ /=$/ # Handle assignments only for read-writable attributes
         attribute = attribute.chop
         return super unless self.attributes.include?(attribute)
         self.changed_attributes[attribute] = args[0]
         self.attributes[attribute] = args[0]
-      else
-        return super unless self.attributes.include?(attribute)
+      elsif self.attributes.include?(attribute) # Accessor for existing attributes
         self.attributes[attribute]
+      elsif self.read_only_members.include?(attribute) # Accessor for existing read-only members
+        self.read_only_members[attribute]
+      else # Not found - use default behavior
+        super
       end 
             
     end
