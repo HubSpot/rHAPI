@@ -13,6 +13,23 @@ module RHapi
     def initialize(data)
       self.attributes = data
     end
+
+    # Work with data in the data hash
+    def method_missing(method, *args, &block)
+      
+      attribute = ActiveSupport::Inflector.camelize(method.to_s, false)
+  
+      if attribute =~ /=$/
+        attribute = attribute.chop
+        return super unless self.attributes.include?(attribute)
+        self.changed_attributes[attribute] = args[0]
+        self.attributes[attribute] = args[0]
+      else
+        return super unless self.attributes.include?(attribute)
+        self.attributes[attribute]
+      end 
+            
+    end
   end
 
   class Contact
