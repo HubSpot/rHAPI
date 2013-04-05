@@ -29,7 +29,7 @@ module RHapi
     include Connection
     extend Connection::ClassMethods
     
-    attr_accessor :attributes, :changed_attributes
+    attr_accessor :attributes, :changed_attributes, :read_only_members
     
     def initialize(data)
       self.read_only_members = data.slice!('properties') # Construct read-only attributes (e.g.: portal id)
