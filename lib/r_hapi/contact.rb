@@ -33,7 +33,7 @@ module RHapi
     
     def initialize(data)
       data.each do |property, hash|
-        data[property] = hash.value
+        data[property] = hash["value"]
       end
       
       self.attributes = data
