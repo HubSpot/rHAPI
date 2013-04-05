@@ -4,7 +4,18 @@ require 'active_support/inflector/inflections'
 require File.expand_path('../connection', __FILE__)
 
 module RHapi
-  
+  class PortalStatistic
+    include Connection
+    include Connection::ClassMethods
+
+    attr_accessor :attributes
+
+    def initialize(data)
+      self.attributes = data
+    end
+  end
+
+  end
   class Contact
     include Connection
     extend Connection::ClassMethods
@@ -48,6 +59,17 @@ module RHapi
       ))
       contact_data = JSON.parse(response.body_str)
       Contact.new(contact_data)
+    end
+
+    # Gets portal statistics.
+    def self.statistics
+      response = get(url_for(
+        :api => 'contacts',
+        :resource => 'contacts',
+        :method => 'statistics'
+      ))
+      statistics_data = JSON.parse(response.body_str)
+      PortalStatistic.new(statistics_data)
     end
     
     # Instance methods -------------------------------------------------------
