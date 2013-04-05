@@ -78,6 +78,8 @@ To get a single lead with a guid. Assumes the guid has be saved from a previous 
 
 == Changelog
 
+* Provide access to hyphened properties at higher-tree levels
+* Added methods to fetch contacts by vid, user token, and email
 * Abstracted to allow for multiple api implementations (beyond just leads)
 * Accept oAuth access tokens and prefer them over api keys for non-legacy api calls
 
