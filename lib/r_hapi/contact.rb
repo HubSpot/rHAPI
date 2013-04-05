@@ -47,15 +47,16 @@ module RHapi
     def method_missing(method, *args, &block)
       
       attribute = ActiveSupport::Inflector.camelize(method.to_s, false)
+      attribute.chop if attribute =~ /=$/
+      dashed_attribute = ActiveSupport::Inflector.dasherize(ActiveSupport::Inflector.underscore(attribute))
   
       if attribute =~ /=$/
-        attribute = attribute.chop
-        return super unless self.attributes.include?(attribute)
-        self.changed_attributes[attribute] = args[0]
-        self.attributes[attribute] = args[0]
+        return super unless self.attributes.include?("#{dashed_attribute}")
+        self.changed_attributes["#{dashed_attribute}"] = args[0]
+        self.attributes["#{dashed_attribute}"] = args[0]
       else
-        return super unless self.attributes.include?(attribute)
-        self.attributes[attribute]
+        return super unless self.attributes.include?("#{dashed_attribute}")
+        self.attributes["#{dashed_attribute}"]
       end 
             
     end
