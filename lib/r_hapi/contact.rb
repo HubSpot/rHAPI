@@ -14,6 +14,7 @@ module RHapi
       @attributes = data
     end
 
+    # Instance methods -------------------------------------------------------
     # Work with data in the data hash
     def method_missing(method, *args, &block)
       
@@ -43,6 +44,7 @@ module RHapi
       self.changed_attributes = {}
     end
 
+    # Instance methods -------------------------------------------------------
     # Work with data in the data hash
     def method_missing(method, *args, &block)
       
@@ -78,6 +80,7 @@ module RHapi
       self.changed_attributes = {}
     end
 
+    # Instance methods -------------------------------------------------------
     # Work with data in the data hash
     def method_missing(method, *args, &block)
       
@@ -129,12 +132,14 @@ module RHapi
       ContactQuery.new(contact_data)
     end
     
-    # Finds specified contact by the guid.
-    def self.find_by_guid(guid)
+    # Finds specified contact by its unique id (vid).
+    def self.find_by_vid(vid)
       response = get(url_for(
         :api => 'contacts',
         :resource => 'contact',
-        :identifier => guid
+        :filter => 'vid',
+        :identifier => vid,
+        :method => 'profile'
       ))
       contact_data = JSON.parse(response.body_str)
       Contact.new(contact_data)
