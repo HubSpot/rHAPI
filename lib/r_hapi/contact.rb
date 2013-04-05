@@ -49,8 +49,8 @@ module RHapi
       attribute = ActiveSupport::Inflector.camelize(method.to_s, false)
       dashed_attribute = ActiveSupport::Inflector.dasherize(ActiveSupport::Inflector.underscore(attribute))
   
-      if attribute =~ /=$/
-        attribute = attribute.chop
+      if dashed_attribute =~ /=$/
+        dashed_attribute = dashed_attribute.chop
         return super unless self.attributes.include?("#{dashed_attribute}")
         self.changed_attributes["#{dashed_attribute}"] = args[0]
         self.attributes["#{dashed_attribute}"] = args[0]
