@@ -6,7 +6,7 @@ require File.expand_path('../connection', __FILE__)
 module RHapi
   class PortalStatistic
     include Connection
-    include Connection::ClassMethods
+    extend Connection::ClassMethods
 
     attr_accessor :attributes
 
