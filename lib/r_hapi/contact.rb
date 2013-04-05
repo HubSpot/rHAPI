@@ -8,10 +8,10 @@ module RHapi
     include Connection
     extend Connection::ClassMethods
 
-    attr_accessor :attributes
+    attr_reader :attributes
 
     def initialize(data)
-      self.attributes = data
+      @attributes = data
     end
 
     # Work with data in the data hash
