@@ -53,6 +53,8 @@ module RHapi
             
     end
 
+  end
+
   class Contact
     include Connection
     extend Connection::ClassMethods
