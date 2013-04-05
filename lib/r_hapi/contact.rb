@@ -25,6 +25,34 @@ module RHapi
     end
   end
 
+  class ContactProperty
+    include Connection
+    extend Connection::ClassMethods
+    
+    attr_accessor :attributes, :changed_attributes
+    
+    def initialize(data)
+      self.attributes = data
+      self.changed_attributes = {}
+    end
+
+    # Work with data in the data hash
+    def method_missing(method, *args, &block)
+      
+      attribute = ActiveSupport::Inflector.camelize(method.to_s, false)
+  
+      if attribute =~ /=$/
+        attribute = attribute.chop
+        return super unless self.attributes.include?(attribute)
+        self.changed_attributes[attribute] = args[0]
+        self.attributes[attribute] = args[0]
+      else
+        return super unless self.attributes.include?(attribute)
+        self.attributes[attribute]
+      end 
+            
+    end
+
   class Contact
     include Connection
     extend Connection::ClassMethods
@@ -34,6 +62,7 @@ module RHapi
     
     def initialize(data)
       @read_only_members = data.slice!('properties') # Construct read-only attributes (e.g.: portal id)
+      data['properties'] = ContactProperty.new(data['properties'])
       self.attributes = data # Read-writable properties (e.g.: first & last name)
       self.changed_attributes = {}
     end
