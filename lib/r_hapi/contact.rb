@@ -33,7 +33,7 @@ module RHapi
     attr_reader :read_only_members
     
     def initialize(data)
-      self.read_only_members = data.slice!('properties') # Construct read-only attributes (e.g.: portal id)
+      @read_only_members = data.slice!('properties') # Construct read-only attributes (e.g.: portal id)
       self.attributes = data # Read-writable properties (e.g.: first & last name)
       self.changed_attributes = {}
     end
