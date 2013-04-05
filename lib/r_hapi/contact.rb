@@ -32,6 +32,10 @@ module RHapi
     attr_accessor :attributes, :changed_attributes
     
     def initialize(data)
+      data.each do |property, hash|
+        data[property] = hash.value
+      end
+      
       self.attributes = data
       self.changed_attributes = {}
     end
