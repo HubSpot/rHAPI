@@ -145,6 +145,32 @@ module RHapi
       Contact.new(contact_data)
     end
 
+    # Finds specified contact by its email address.
+    def self.find_by_email(email)
+      response = get(url_for(
+        :api => 'contacts',
+        :resource => 'contact',
+        :filter => 'email',
+        :identifier => email,
+        :method => 'profile'
+      ))
+      contact_data = JSON.parse(response.body_str)
+      Contact.new(contact_data)
+    end
+
+    # Finds specified contact by its user token.
+    def self.find_by_token(token)
+      response = get(url_for(
+        :api => 'contacts',
+        :resource => 'contact',
+        :filter => 'utk',
+        :identifier => token,
+        :method => 'profile'
+      ))
+      contact_data = JSON.parse(response.body_str)
+      Contact.new(contact_data)
+    end
+
     # Gets portal statistics.
     def self.statistics
       response = get(url_for(
