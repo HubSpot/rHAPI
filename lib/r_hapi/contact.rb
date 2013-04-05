@@ -109,6 +109,7 @@ module RHapi
     def method_missing(method, *args, &block)
       
       attribute = ActiveSupport::Inflector.camelize(method.to_s, false)
+      dashed_attribute = ActiveSupport::Inflector.dasherize(ActiveSupport::Inflector.underscore(attribute))
   
       if attribute =~ /=$/ # Handle assignments only for read-writable attributes
         attribute = attribute.chop
@@ -117,8 +118,8 @@ module RHapi
         self.attributes[attribute] = args[0]
       elsif self.attributes.include?(attribute) # Accessor for existing attributes
         self.attributes[attribute]
-      elsif self.read_only_members.include?(attribute) # Accessor for existing read-only members
-        self.read_only_members[attribute]
+      elsif self.read_only_members.include?("#{dashed_attribute}") # Accessor for existing read-only members
+        self.read_only_members["#{dashed_attribute}"]
       else # Not found - use default behavior
         super
       end 
