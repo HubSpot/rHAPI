@@ -104,10 +104,6 @@ module RHapi
           options[:vidOffset] = @changed_attributes['vidOffset']
         end
       end
-      if options[:count].nil?
-          options[:count] = @attributes['offset'] unless @attributes['offset'].nil? # Override count if not in called options
-          options[:count] = @changed_attributes['offset'] unless @changed_attributes['offset'].nil? # Override count if updated
-      end
       results = Contact.all(options)
       super(results, options) 
     end
