@@ -47,9 +47,11 @@ module RHapi
     # Instance methods -------------------------------------------------------
     # Refresh the query
     def refresh_query(search=nil, options={})  
-      options[:q] = search unless search.nil?
-      options[:q] = @changed_attributes['query'] unless @changed_attributes['query'].nil?
-      options[:count] = @changed_attributes['offset'] unless @changed_attributes['offset'].nil?
+      options[:q] = @attributes['query'] unless @attributes['query'].nil? # Default to existing search
+      options[:q] = search unless search.nil? # Override with called search
+      options[:q] = @changed_attributes['query'] unless @changed_attributes['query'].nil? # Override with updated query
+      options[:count] = @attributes['offset'] unless @attributes['offset'].nil or !options[:count].nil? # Override count if not in called options
+      options[:count] = @changed_attributes['offset'] unless @changed_attributes['offset'].nil? # Override count if updated
       results = Contact.find(search, options)
       results.attributes.each_pair do |key, value|
         self.attributes[key] = value
