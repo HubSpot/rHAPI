@@ -119,10 +119,13 @@ module RHapi
     end
 
     def page(number=nil, count_per_page=nil)
+      count_per_page = self.contacts.size if count_per_page.nil?
+      refresh_query(count: count_per_page, vidOffset: count_per_page * --number)
     end
 
-    def previous
-
+    def previous(count=nil)
+      count = self.contacts.size if count.nil?
+      refresh_query(count: count, vidOffset: self.vidOffset - count)
     end
 
     alias_method :prev, :previous
