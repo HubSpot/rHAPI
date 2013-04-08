@@ -134,6 +134,7 @@ module RHapi
 
   class ContactRecent < ContactQuery
     # TODO: allow refresh to get the latest (once again) rather than paging
+    # consider reload! refresh! refresh_query!
     def refresh_query(options={})
       if options[:timeOffset].nil?
         unless @attributes['time-offset'].nil?
@@ -164,6 +165,8 @@ module RHapi
       count = self.contacts.size if count.nil?
       refresh_query(count: count, timeOffset: self.timeOffset, vidOffset: self.vidOffset)
     end
+
+    # TODO: add since and from {DATE} with support for 5.days.ago, etc
 
   end
 
