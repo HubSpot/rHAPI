@@ -52,9 +52,9 @@ module RHapi
       options[:count] = @changed_attributes['offset'] unless @changed_attributes['offset'].nil?
       results = Contact.find(search, options)
       results.attributes.each_pair do |key, value|
-        this.attributes[key] = value
+        self.attributes[key] = value
       end
-      this.changed_attributes = {}
+      self.changed_attributes = {}
     end
     # Work with data in the data hash
     def method_missing(method, *args, &block)
