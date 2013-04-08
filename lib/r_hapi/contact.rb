@@ -120,7 +120,7 @@ module RHapi
 
     def page(number=1, count_per_page=nil)
       count_per_page = self.contacts.size if count_per_page.nil?
-      refresh_query(count: count_per_page, vidOffset: count_per_page * --number)
+      refresh_query(count: count_per_page, vidOffset: count_per_page * (number -1 ))
     end
 
     def previous(count=nil)
