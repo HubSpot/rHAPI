@@ -46,7 +46,7 @@ module RHapi
 
     # Instance methods -------------------------------------------------------
     # Refresh the query
-    def refresh_query(results, options={})
+    def refresh_query(results)
       raise 'Must provide resultset to refresh query' if results.nil?
       results.attributes.each_pair do |key, value|
         self.attributes[key] = value
@@ -85,7 +85,7 @@ module RHapi
         options[:count] = @changed_attributes['offset'] unless @changed_attributes['offset'].nil? # Override count if updated
       end
       results = Contact.find(search, options)
-      super(results, options) 
+      super(results) 
     end
 
     alias_method :refresh, :refresh_query
@@ -105,7 +105,7 @@ module RHapi
         end
       end
       results = Contact.all(options)
-      super(results, options) 
+      super(results) 
     end
 
     alias_method :refresh, :refresh_query
@@ -130,7 +130,41 @@ module RHapi
 
     alias_method :prev, :previous
 
-    # refresh/reload
+  end
+
+  class ContactRecent < ContactQuery
+    # TODO: allow refresh to get the latest (once again) rather than paging
+    def refresh_query(options={})
+      if options[:timeOffset].nil?
+        unless @attributes['time-offset'].nil?
+          options[:timeOffset] = @attributes['time-offset']
+        end
+        unless @changed_attributes['time-offset'].nil?
+          options[:timeOffset] = @changed_attributes['time-offset']
+        end
+      end
+      if options[:vidOffset].nil?
+        unless @attributes['vid-offset'].nil?
+          options[:vidOffset] = @attributes['vid-offset']
+        end
+        unless @changed_attributes['vid-offset'].nil?
+          options[:vidOffset] = @changed_attributes['vid-offset']
+        end
+      end
+      results = Contact.recent(options)
+      super(results) 
+    end
+
+    alias_method :refresh, :refresh_query
+    alias_method :reload, :refresh_query
+
+    # Constrain count to <= 100
+    # Paginate with vidOffset and send param as vidOffset
+    def next(count=nil)
+      count = self.contacts.size if count.nil?
+      refresh_query(count: count, timeOffset: self.timeOffset, vidOffset: self.vidOffset)
+    end
+
   end
 
   class ContactProperty
@@ -253,8 +287,24 @@ module RHapi
       ContactAll.new(contact_data)
     end
 
+    # Finds most contacts
+    def self.recent(options={})
+      response = get(url_for({
+        :api => 'contacts',
+        :resource => 'lists',
+        :filter => 'recently_updated',
+        :member => 'contacts',
+        :context => 'recent'
+      }, options))
+ 
+      contact_data = JSON.parse(response.body_str)
+      ContactRecent.new(contact_data)
+    end
+
     class << self 
       alias_method :find_all, :all
+      alias_method :newest, :recent
+      alias_method :most_recent, :recent
     end
 
     # Gets portal statistics.
