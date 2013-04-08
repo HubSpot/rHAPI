@@ -59,6 +59,10 @@ module RHapi
       self.changed_attributes = {}
       true
     end
+
+    alias_method :refresh, :refresh_query
+    alias_method :reload, :refresh_query
+
     # Work with data in the data hash
     def method_missing(method, *args, &block)
       
