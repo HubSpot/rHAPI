@@ -125,7 +125,7 @@ module RHapi
 
     def previous(count=nil)
       count = self.contacts.size if count.nil?
-      refresh_query(count: count, vidOffset: self.vidOffset - count)
+      refresh_query(count: count, vidOffset: self.vidOffset - (count * 2))
     end
 
     alias_method :prev, :previous
