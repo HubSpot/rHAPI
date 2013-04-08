@@ -46,13 +46,8 @@ module RHapi
 
     # Instance methods -------------------------------------------------------
     # Refresh the query
-    def refresh_query(search=nil, options={})  
-      options[:q] = @attributes['query'] unless @attributes['query'].nil? # Default to existing search
-      options[:q] = search unless search.nil? # Override with called search
-      options[:q] = @changed_attributes['query'] unless @changed_attributes['query'].nil? # Override with updated query
-      options[:count] = @attributes['offset'] unless @attributes['offset'].nil? or !options[:count].nil? # Override count if not in called options
-      options[:count] = @changed_attributes['offset'] unless @changed_attributes['offset'].nil? # Override count if updated
-      results = Contact.find(search, options)
+    def refresh_query(results, options={})
+      raise 'Must provide resultset to refresh query' if results.nil?
       results.attributes.each_pair do |key, value|
         self.attributes[key] = value
       end
@@ -84,11 +79,55 @@ module RHapi
   end
 
   class ContactSearch < ContactQuery
+    def refresh_query(search=nil, options={})
+      options[:q] = @attributes['query'] unless @attributes['query'].nil? # Default to existing search
+      options[:q] = search unless search.nil? # Override with called search
+      options[:q] = @changed_attributes['query'] unless @changed_attributes['query'].nil? # Override with updated query
+      if options[:count].nil?
+        options[:count] = @attributes['offset'] unless @attributes['offset'].nil? or !options[:count].nil? # Override count if not in called options
+        options[:count] = @changed_attributes['offset'] unless @changed_attributes['offset'].nil? # Override count if updated
+      end
+      results = Contact.find(search, options)
+      super(results, options) 
+    end
 
   end
 
   class ContactAll < ContactQuery
 
+    def refresh_query(options={})
+      if options[:vidOffset].nil?
+        unless @attributes['vidOffset'].nil?
+          options[:vidOffset] = @attributes['vidOffset']
+        end
+        unless @changed_attributes['vidOffset'].nil?
+          options[:vidOffset] = @changed_attributes['vidOffset']
+        end
+      end
+      if options[:count].nil?
+          options[:count] = @attributes['offset'] unless @attributes['offset'].nil? # Override count if not in called options
+          options[:count] = @changed_attributes['offset'] unless @changed_attributes['offset'].nil? # Override count if updated
+      end
+      results = Contact.all(options)
+      super(results, options) 
+    end
+
+    # Constrain count to <= 100
+    # Paginate with vidOffset and send param as vidOffset
+    def next(count=nil)
+      refresh_query(count: count, vidOffset: self.vidOffset)
+    end
+
+    def page(number=nil, count_per_page=nil)
+    end
+
+    def previous
+
+    end
+
+    alias_method :prev, :previous
+
+    # refresh/reload
   end
 
   class ContactProperty
