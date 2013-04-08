@@ -341,8 +341,16 @@ module RHapi
         self.attributes[attribute] = value
       end
     end
-    
-    
+
+    def delete
+      response = delete(Contact.url_for(
+        :api => 'contacts',
+        :resource => 'contact',
+        :filter => 'vid',
+        :identifier => self.vid,
+      ))
+      true
+    end
     
     # Work with data in the data hash
     def method_missing(method, *args, &block)
