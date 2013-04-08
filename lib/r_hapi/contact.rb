@@ -55,6 +55,7 @@ module RHapi
         self.attributes[key] = value
       end
       self.changed_attributes = {}
+      true
     end
     # Work with data in the data hash
     def method_missing(method, *args, &block)
