@@ -114,7 +114,7 @@ module RHapi
     # Constrain count to <= 100
     # Paginate with vidOffset and send param as vidOffset
     def next(count=nil)
-      count = self.contacts.size
+      count = self.contacts.size if count.nil?
       refresh_query(count: count, vidOffset: self.vidOffset)
     end
 
