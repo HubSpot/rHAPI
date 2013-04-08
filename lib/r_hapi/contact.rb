@@ -97,11 +97,11 @@ module RHapi
 
     def refresh_query(options={})
       if options[:vidOffset].nil?
-        unless @attributes['vidOffset'].nil?
-          options[:vidOffset] = @attributes['vidOffset']
+        unless @attributes['vid-offset'].nil?
+          options[:vidOffset] = @attributes['vid-offset']
         end
-        unless @changed_attributes['vidOffset'].nil?
-          options[:vidOffset] = @changed_attributes['vidOffset']
+        unless @changed_attributes['vid-offset'].nil?
+          options[:vidOffset] = @changed_attributes['vid-offset']
         end
       end
       results = Contact.all(options)
