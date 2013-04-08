@@ -55,6 +55,7 @@ module RHapi
       def append_options(options)
         query_string = ""
         options.each do |key, value|
+          next if value.nil?
           query_string << "&#{key.to_s}=#{value}"
         end
         query_string
