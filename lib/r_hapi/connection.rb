@@ -15,7 +15,16 @@ module RHapi
       end
       RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
     end
-    
+
+    def delete(url)
+      response == Curl::Easy.http_delete(url) do |curl|
+        curl.on_failure do |response, err|
+          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
+        end
+      end
+      RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
+    end
+
     # Class methods -----------------------------------------------------------------------------
     
     module ClassMethods
