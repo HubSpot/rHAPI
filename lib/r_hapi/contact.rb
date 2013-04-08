@@ -83,11 +83,11 @@ module RHapi
 
   end
 
-  class ContactSearch > ContactQuery
+  class ContactSearch < ContactQuery
 
   end
 
-  class ContactAll > ContactQuery
+  class ContactAll < ContactQuery
 
   end
 
