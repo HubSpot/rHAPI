@@ -17,7 +17,7 @@ module RHapi
     end
 
     def http_delete(url) # Namespace to avoid clash with methods which implement delete 
-      response == Curl::Easy.http_delete(url) do |curl|
+      response = Curl::Easy.http_delete(url) do |curl|
         curl.on_failure do |response, err|
           RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
         end
