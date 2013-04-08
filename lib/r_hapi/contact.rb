@@ -55,9 +55,6 @@ module RHapi
       true
     end
 
-    alias_method :refresh, :refresh_query
-    alias_method :reload, :refresh_query
-
     # Work with data in the data hash
     def method_missing(method, *args, &block)
       
@@ -91,6 +88,9 @@ module RHapi
       super(results, options) 
     end
 
+    alias_method :refresh, :refresh_query
+    alias_method :reload, :refresh_query
+
   end
 
   class ContactAll < ContactQuery
@@ -107,6 +107,9 @@ module RHapi
       results = Contact.all(options)
       super(results, options) 
     end
+
+    alias_method :refresh, :refresh_query
+    alias_method :reload, :refresh_query
 
     # Constrain count to <= 100
     # Paginate with vidOffset and send param as vidOffset
