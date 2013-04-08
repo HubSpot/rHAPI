@@ -210,8 +210,10 @@ module RHapi
       contact_data = JSON.parse(response.body_str)
       ContactAll.new(contact_data)
     end
-    
-    alias_method :find_all, :all
+
+    class << self 
+      alias_method :find_all, :all
+    end
 
     # Gets portal statistics.
     def self.statistics
