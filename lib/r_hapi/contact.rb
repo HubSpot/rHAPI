@@ -304,7 +304,8 @@ module RHapi
       ContactRecent.new(contact_data)
     end
 
-    class << self 
+    class << self
+      alias_method :search, :find
       alias_method :find_all, :all
       alias_method :newest, :recent
       alias_method :most_recent, :recent
