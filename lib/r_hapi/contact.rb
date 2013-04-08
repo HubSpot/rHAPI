@@ -83,6 +83,14 @@ module RHapi
 
   end
 
+  class ContactSearch > ContactQuery
+
+  end
+
+  class ContactAll > ContactQuery
+
+  end
+
   class ContactProperty
     include Connection
     extend Connection::ClassMethods
@@ -147,7 +155,7 @@ module RHapi
       }, options))
  
       contact_data = JSON.parse(response.body_str)
-      ContactQuery.new(contact_data)
+      ContactSearch.new(contact_data)
     end
     
     # Finds specified contact by its unique id (vid).
@@ -188,6 +196,22 @@ module RHapi
       contact_data = JSON.parse(response.body_str)
       Contact.new(contact_data)
     end
+
+    # Finds all contacts
+    def self.all(options={})
+      response = get(url_for({
+        :api => 'contacts',
+        :resource => 'lists',
+        :filter => 'all',
+        :member => 'contacts',
+        :context => 'all'
+      }, options))
+ 
+      contact_data = JSON.parse(response.body_str)
+      ContactAll.new(contact_data)
+    end
+    
+    alias_method :find_all, :all
 
     # Gets portal statistics.
     def self.statistics
