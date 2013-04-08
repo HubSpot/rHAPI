@@ -48,8 +48,8 @@ module RHapi
     # Refresh the query
     def refresh_query(search=nil, options={})  
       options[:q] = search unless search.nil?
-      options[:q] = @changed_attributes.query unless @changed_attributes.offset.nil?
-      options[:count] = @changed_attributes.offset unless @changed_attributes.offset.nil?
+      options[:q] = @changed_attributes['query'] unless @changed_attributes['query'].nil?
+      options[:count] = @changed_attributes['offset'] unless @changed_attributes['offset'].nil?
       results = Contact.find(search, options)
       results.each do |key, value|
         this[key] = value
