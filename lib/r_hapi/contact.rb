@@ -343,7 +343,7 @@ module RHapi
     end
 
     def delete
-      response = delete(Contact.url_for(
+      response = http_delete(Contact.url_for(
         :api => 'contacts',
         :resource => 'contact',
         :filter => 'vid',
@@ -351,6 +351,8 @@ module RHapi
       ))
       true
     end
+
+    alias_method :destroy, :delete
     
     # Work with data in the data hash
     def method_missing(method, *args, &block)
