@@ -195,9 +195,8 @@ module RHapi
       
       attribute = ActiveSupport::Inflector.camelize(method.to_s, false)
   
-      if attribute =~ /=$/
+      if attribute =~ /=$/ # Define property -- does not have to exist
         attribute = attribute.chop
-        return super unless self.attributes.include?(attribute)
         self.changed_attributes[attribute] = args[0]
         self.attributes[attribute] = args[0]
       else
@@ -344,7 +343,7 @@ module RHapi
     # Instance methods -------------------------------------------------------
     def save
       params = []
-      self.attributes.properties.changed_attributes.each_pair do |key, value|
+      self.properties.changed_attributes.each_pair do |key, value|
         params << { :property => key, :value => value }
       end
       # call create or update API method accordingly
