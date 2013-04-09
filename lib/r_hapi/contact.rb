@@ -325,6 +325,13 @@ module RHapi
       PortalStatistic.new(statistics_data)
     end
     
+    class << self
+      alias_method :search, :find
+      alias_method :find_all, :all
+      alias_method :newest, :recent
+      alias_method :most_recent, :recent
+    end
+
     # Instance methods -------------------------------------------------------
     def save
       params = []
@@ -421,15 +428,11 @@ module RHapi
             
     end
 
-    class << self
-      alias_method :search, :find
-      alias_method :find_all, :all
-      alias_method :newest, :recent
-      alias_method :most_recent, :recent
+    class << Contact
       private :create_new
       private :update_existing
     end
-    
+ 
   end
   
 end
