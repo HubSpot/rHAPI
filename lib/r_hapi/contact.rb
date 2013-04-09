@@ -222,7 +222,7 @@ module RHapi
         data['properties'] = ContactProperty.new(data['properties'])
         self.attributes = data # Read-writable properties (e.g.: first & last name)
       else
-        self.attributes = ContactProperty.new
+        self.attributes = { 'properties' => ContactProperty.new }
         @read_only_members = {}
       end
       self.changed_attributes = {}
