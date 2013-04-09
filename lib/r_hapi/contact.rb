@@ -428,10 +428,9 @@ module RHapi
             
     end
 
-    class << Contact
-      private :create_new
-      private :update_existing
-    end
+    # Private methods
+    private :create_new
+    private :update_existing
  
   end
   
