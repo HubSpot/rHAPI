@@ -18,14 +18,14 @@ module RHapi
 
     def post(url, payload)
       data = payload.to_json
-      response = Curl::Easy.http_put(url, data) do |curl| 
+      response = Curl::Easy.http_post(url, data) do |curl| 
         curl.headers["Content-Type"] = "application/json"
         curl.on_failure do |response, err|
           RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
         end
-        curl.on_complete do |easy|
+        curl.on_complete do |response|
           RHapi::ConnectionError.raise_error(response.header_str) unless easy.header_str =~ /2\d\d/
-          easy.response
+          response
         end
       end
     end
