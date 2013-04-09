@@ -220,7 +220,17 @@ module RHapi
     end
     
     # Class methods ----------------------------------------------------------
+
+    def self.create(params)
+      data = { 'properties': params }
+      contact = Contact.new(data)
+      contact.properties.changed_attributes = params # flag properties as changed
+      contact.save # collect new properties and save
+      # returns new contact object
+    end
     
+    # TODO: implement reload
+
     # Finds contacts and returns an array of contacts. 
     # An optional string value that is used to search several basic contact fields: first name, last name, email address, 
     # and company name. According to HubSpot docs, a more advanced search is coming in the future. 
@@ -309,6 +319,8 @@ module RHapi
       alias_method :find_all, :all
       alias_method :newest, :recent
       alias_method :most_recent, :recent
+      private :create_new
+      private :update_existing
     end
 
     # Gets portal statistics.
@@ -323,24 +335,66 @@ module RHapi
     end
     
     # Instance methods -------------------------------------------------------
-    def update(params={})
-      update_attributes(params) unless params.empty?
-      response = put(Contact.url_for(
-        :api => 'contacts',
-        :resource => 'contact',
-        :identifier => self.guid,
-      ), self.changed_attributes)
-      true
+    def save
+      params = []
+      self.attributes.properties.changed_attributes.each_pair do |key, value|
+        params << { :property => key, :value => value }
+      end
+      # call create or update API method accordingly
+      if self.vid.nil? and self.read_only_members.empty?
+        unless self.properties.include?("email") or self.properties.include?(:email)
+          raise(RHapi::AttributeError, "Newly created contacts must include an email address.")
+        end
+        response = create_new(params)
+      else
+        response = update_existing(params)
+      end
+      self.changed_attributes = {}
+      response
     end
-    
+    def update(params={})
+      unless params.empty?
+        update_attributes(params) # changes values and sets changed_attributes for ContactProperty object
+        # at self.properties[.{changed_}attributes], then runs save
+      else 
+        save
+      end
+    end
+
+    # Note: Takes the exact string name of the property to be changed
+    # TODO: only allow existing properties
+    def update_attribute(name, value) # to be deprecated in rails 4 by update_column
+      self.properties.send(name.to_s + '=', value)
+      save
+    end
+
+    # Note: Takes the exact string name of the property to be changed
+    # TODO: only allow existing properties
     def update_attributes(params)
       raise(RHapi::AttributeError, "The params must be a hash.") unless params.is_a?(Hash)
-      params.each do |key, value|
-        attribute = ActiveSupport::Inflector.camelize(key.to_s, false)
-        raise(RHapi::AttributeError, "No Hubspot attribute with the name #{attribute}.") unless self.attributes.include?(attribute)
-        self.changed_attributes[attribute] = value
-        self.attributes[attribute] = value
+      params.each do |name, value|
+        self.properties.send(name.to_s + '=', value)
       end
+      save # only call API once rather than repeatedly saving with update_attribute calls
+    end
+
+    def create_new(params)
+      response = post(Contact.url_for(
+        :api => 'contacts',
+        :resource => 'contact'
+      ), params)
+      contact_data = JSON.parse(response.body_str)
+      Contact.new(contact_data)
+    end
+
+    def update_existing(params)
+      response = post(Contact.url_for(
+        :api => 'contacts',
+        :resource => 'contact',
+        :filter => 'vid',
+        :identifier => self.vid,
+        :method => 'profile'
+      ), params)
     end
 
     def delete
@@ -348,7 +402,7 @@ module RHapi
         :api => 'contacts',
         :resource => 'contact',
         :filter => 'vid',
-        :identifier => self.vid,
+        :identifier => self.vid
       ))
       true
     end

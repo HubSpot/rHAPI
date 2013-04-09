@@ -16,6 +16,17 @@ module RHapi
       RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
     end
 
+    def post(url, payload)
+      data = payload.to_json
+      response = Curl::Easy.http_post(url, data) do |curl| 
+        curl.headers["Content-Type"] = "application/json"
+        curl.on_failure do |response, err|
+          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
+        end
+      end
+      RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
+    end
+
     def http_delete(url) # Namespace to avoid clash with methods which implement delete 
       response = Curl::Easy.http_delete(url) do |curl|
         curl.on_failure do |response, err|
