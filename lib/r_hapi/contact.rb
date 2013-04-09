@@ -346,6 +346,7 @@ module RHapi
       self.properties.changed_attributes.each_pair do |key, value|
         params << { :property => key, :value => value }
       end
+      params = { 'properties' => params }
       # call create or update API method accordingly
       if self.read_only_members.empty?
         unless self.properties.attributes.include?("email")
