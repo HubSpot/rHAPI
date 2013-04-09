@@ -314,15 +314,6 @@ module RHapi
       ContactRecent.new(contact_data)
     end
 
-    class << self
-      alias_method :search, :find
-      alias_method :find_all, :all
-      alias_method :newest, :recent
-      alias_method :most_recent, :recent
-      private :create_new
-      private :update_existing
-    end
-
     # Gets portal statistics.
     def self.statistics
       response = get(url_for(
@@ -428,6 +419,15 @@ module RHapi
         super
       end 
             
+    end
+
+    class << self
+      alias_method :search, :find
+      alias_method :find_all, :all
+      alias_method :newest, :recent
+      alias_method :most_recent, :recent
+      private :create_new
+      private :update_existing
     end
     
   end
