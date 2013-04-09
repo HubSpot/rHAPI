@@ -26,7 +26,7 @@ module RHapi
       end
       c.http_post
       c.body_str
-      RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
+      RHapi::ConnectionError.raise_error(response.header_str) unless c.header_str =~ /2\d\d/
     end
 
     def http_delete(url) # Namespace to avoid clash with methods which implement delete 
