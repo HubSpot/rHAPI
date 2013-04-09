@@ -347,7 +347,7 @@ module RHapi
         params << { :property => key, :value => value }
       end
       # call create or update API method accordingly
-      if self.vid.nil? and self.read_only_members.empty?
+      if self.read_only_members.empty?
         unless self.properties.include?("email") or self.properties.include?(:email)
           raise(RHapi::AttributeError, "Newly created contacts must include an email address.")
         end
