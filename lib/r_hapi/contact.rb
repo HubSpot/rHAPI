@@ -222,7 +222,7 @@ module RHapi
     # Class methods ----------------------------------------------------------
 
     def self.create(params)
-      data = { 'properties': params }
+      data = { 'properties' => params }
       contact = Contact.new(data)
       contact.properties.changed_attributes = params # flag properties as changed
       contact.save # collect new properties and save
