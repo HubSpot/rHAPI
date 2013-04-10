@@ -10,18 +10,157 @@ RHapi is a Ruby wrapper for the HubSpot API (HAPI).
 
 == Using RHapi 
 
-Intsall 
+Install 
 If you use RVM.
   gem install r_hapi
   
 If not you may need to do this:
   sudo gem install r_hapi
 
-First configure RHapi to work with your Hubspot API Key.
+First configure RHapi to work with your Hubspot API Key or oAuth access token.
 
   RHapi.configure do |config|
     config.api_key = "YOUR_API_KEY"
+    config.access_token = "YOUR_ACCESS_TOKEN" # Takes precedence over api_key
   end
+
+=== Contacts API Examples
+
+RHapi now supports all Hubspot Contact API methods.
+
+Create a Contact
+
+  RHapi::Contact.create('email' => 'user@example.com')
+
+(Returns a new RHapi::Contact instance populated with values from Hubspot)
+
+You may also construct a new Contact and populate it before pushing to Hubspot.
+
+  contact = RHapi::Contact.new
+  contact.properties.email = 'user@example.com'
+  contact.save # Can also call contact.update
+
+Note that when a contact is created, it does not reload itself but returns the new Contact object from Hubspot.
+Updates to existing contacts do have their properties updated in the local object.
+
+  contact.properties.email = 'user@example.com' # Defining properties for a new contact
+  contact = contact.save # => Will replace the object with the newly created version returned from Hubspot
+
+  contact.properties.firstname = 'John' # Update local property for an existing contact
+  contact.save # Local object state is synchronized with hubspot
+
+You can create contacts in a similar fashion by defining the attributes using the methods below before calling the save method.
+
+Update a Contact
+
+  contact.update # instance of RHapi::Contact object with changes made
+
+Make changes to attributes and save them:
+
+With a single attribute:
+
+  contact.update_attribute('firstname', 'John') # Updates and calls save
+
+Multiple attributes:
+
+  contact.update_attributes('firstname' => 'John', 'lastname' => 'Doe') # Updates and calls save
+
+Based on property changes:
+
+  contact.properties.firstname = 'John'
+  contact.properties.lastname = 'Doe'
+  contact.update # can also call contact.save
+
+Delete a Contact
+
+  contact.delete # Given existing Contact object
+  # => true
+
+Get All Contacts
+
+  all_contacts = RHapi::Contact.all # Returns RHapi::ContactAll object
+  all_contacts.contacts # Contains array of Contact objects
+  # Access each Contact
+  all_contacts.contacts.each do |contact|
+    puts contact.properties.firstname
+  end
+
+You may page through contacts given a RHapi::ContactAll object
+
+  all = RHapi::Contact.all
+  all.next(5) # Reloads ContactAll object with the next 5 contacts
+  all.next # Reloads with the last used count (5 here, 20 on a new ContactAll instance)
+  all.page(5) # Reloads to the given page number (contacts per page defaults to same rules as next method)
+  all.page(5, 100) # Reloads to the 5th page of contacts with 100 per page (the maximum allowed by Hubspot)
+  all.previous # Same default rules as next
+  all.previous(15) # Page back by 15 contacts
+  all.prev # Alias for recent.previous
+  # You can set the count and vidOffset properties for the object yourself
+  all.vidOffset = 100
+  all.count = 20
+  # Reload based on parameters you have set 
+  all.refresh_query # Equivalent here to all.page(5, 20) based on defined properties
+  # refresh and reload are aliases to refresh_query 
+
+Get Recent Contacts
+
+  recent = RHapi::Contact.recent # Returns RHapi::ContactRecent object
+  recent.contacts # Contains array of Contact objects
+  # Access each Contact
+  recent.contacts.each do |contact|
+    puts contact.properties.firstname
+  end
+
+You may page through contacts given a RHapi::ContactRecent object
+
+  recent = RHapi::Contact.recent
+  recent.next # Pages forward - same rules as ContactAll objects (20 here)
+  recent.next(5) # Next 5 contacts
+  recent.next # Next 5 contacts
+
+You can set your own paging parameters, but need to supply timeOffset, vidOffset, and optional count
+The same refresh methods (and aliases) are available to you. 
+
+Get Contact by ID
+
+  contact = RHapi::Contact.find_by_vid(5) # Finds contact with vid 5
+
+Get Contact by Email
+
+  contact = RHapi::Contact.find_by_email('user@example.com') # Finds contact with given email
+
+Get Contact by User Token
+
+  contact = RHapi::Contact.find_by_token(utk) # Finds a contact with the given hubspot utk value
+
+Search for Contacts
+
+  results = RHapi::Contact.find('John') # Searches common fields for query, defaults to 20 results
+  # You can also call with the search method alias
+  results = RHapi::Contact.search('John Doe', :count => 100) # Searches with count (max 100)
+  results # => RHapi::ContactSearch object
+  results.contacts # Array of Contact objects
+  results.contacts.each do |contact|
+    puts contact.properties.firstname
+  end
+
+Similar to other query objects, you can modify your query and reload the results:
+
+  results # existing ContactSearch object 
+  results.refresh_query('Jane Doe') # Reloads with new query
+  results.refresh('Jane Doe', :count => 50) # Can supply count and call with refresh or reload alias
+  results.query = 'John Doe'
+  results.offset = 5 # used for count
+  results.reload
+
+Get Contact Statistics
+
+  statistics = RHapi::Contact.statistics # Returns RHapi::ContactStatistic object
+  statistics.contacts # => Contact count
+  statistics.lastNewContactAt # => timestamp
+  Time.at(statistics.lastNewContactAt).to_datetime # Return datetime object from lastNewContactAt
+
+=== Leads API Examples
 
 Then to get a list of leads.
   leads = RHapi::Lead.find
@@ -78,6 +217,8 @@ To get a single lead with a guid. Assumes the guid has be saved from a previous 
 
 == Changelog
 
+* Add CRUD instance methods to Contact objects
+* Implement all Contacts API methods
 * Provide access to hyphened properties at higher-tree levels
 * Added methods to fetch contacts by vid, user token, and email
 * Abstracted to allow for multiple api implementations (beyond just leads)
