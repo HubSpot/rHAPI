@@ -28,7 +28,7 @@ First configure RHapi to work with your Hubspot API Key or oAuth access token.
 
 RHapi now supports all Hubspot Contact API methods.
 
-Create a Contact
+==== Create a Contact
 
   RHapi::Contact.create('email' => 'user@example.com')
 
@@ -51,7 +51,7 @@ Updates to existing contacts do have their properties updated in the local objec
 
 You can create contacts in a similar fashion by defining the attributes using the methods below before calling the save method.
 
-Update a Contact
+==== Update a Contact
 
   contact.update # instance of RHapi::Contact object with changes made
 
@@ -71,12 +71,12 @@ Based on property changes:
   contact.properties.lastname = 'Doe'
   contact.update # can also call contact.save
 
-Delete a Contact
+==== Delete a Contact
 
   contact.delete # Given existing Contact object
   # => true
 
-Get All Contacts
+==== Get All Contacts
 
   all_contacts = RHapi::Contact.all # Returns RHapi::ContactAll object
   all_contacts.contacts # Contains array of Contact objects
@@ -102,7 +102,7 @@ You may page through contacts given a RHapi::ContactAll object
   all.refresh_query # Equivalent here to all.page(5, 20) based on defined properties
   # refresh and reload are aliases to refresh_query 
 
-Get Recent Contacts
+==== Get Recent Contacts
 
   recent = RHapi::Contact.recent # Returns RHapi::ContactRecent object
   recent.contacts # Contains array of Contact objects
@@ -121,19 +121,19 @@ You may page through contacts given a RHapi::ContactRecent object
 You can set your own paging parameters, but need to supply timeOffset, vidOffset, and optional count
 The same refresh methods (and aliases) are available to you. 
 
-Get Contact by ID
+==== Get Contact by ID
 
   contact = RHapi::Contact.find_by_vid(5) # Finds contact with vid 5
 
-Get Contact by Email
+==== Get Contact by Email
 
   contact = RHapi::Contact.find_by_email('user@example.com') # Finds contact with given email
 
-Get Contact by User Token
+==== Get Contact by User Token
 
   contact = RHapi::Contact.find_by_token(utk) # Finds a contact with the given hubspot utk value
 
-Search for Contacts
+==== Search for Contacts
 
   results = RHapi::Contact.find('John') # Searches common fields for query, defaults to 20 results
   # You can also call with the search method alias
@@ -153,7 +153,7 @@ Similar to other query objects, you can modify your query and reload the results
   results.offset = 5 # used for count
   results.reload
 
-Get Contact Statistics
+==== Get Contact Statistics
 
   statistics = RHapi::Contact.statistics # Returns RHapi::ContactStatistic object
   statistics.contacts # => Contact count
