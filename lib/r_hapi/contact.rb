@@ -354,7 +354,7 @@ module RHapi
       else
         response = update_existing(params)
       end
-      self.changed_attributes = {}
+      self.properties.changed_attributes = {}
       response
     end
     def update(params={})
