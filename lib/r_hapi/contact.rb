@@ -400,6 +400,7 @@ module RHapi
         :identifier => self.vid,
         :method => 'profile'
       ), params)
+      true
     end
 
     def delete
