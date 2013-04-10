@@ -230,11 +230,9 @@ module RHapi
     # Class methods ----------------------------------------------------------
 
     def self.create(params)
-      data = { 'properties' => params }
-      contact = Contact.new(data)
-      contact.properties.changed_attributes = params # flag properties as changed
-      contact.save # collect new properties and save
-      # returns new contact object
+      contact = Contact.new
+      contact.update_attributes(params)
+      # returns new contact object # TODO: ensure returns contact object
     end
     
     # TODO: implement reload
