@@ -101,6 +101,7 @@ You may page through contacts given a RHapi::ContactAll object
   # Reload based on parameters you have set 
   all.refresh_query # Equivalent here to all.page(5, 20) based on defined properties
   # refresh and reload are aliases to refresh_query 
+  all = RHapi::Contact.all(:count => 5) # Define count on initial search in constructor
 
 ==== Get Recent Contacts
 
