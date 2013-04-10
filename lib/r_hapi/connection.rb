@@ -67,7 +67,7 @@ module RHapi
           end
           url << "?hapikey=#{RHapi.options[:api_key]}"
         else
-          url << "?token=#{RHapi.options[:access_token]}" # not all hubspot APIs support oAuth token calls 
+          url << "?access_token=#{RHapi.options[:access_token]}" # not all hubspot APIs support oAuth token calls 
         end
         
         raise(RHapi::UriError, "Options must be a hash in order to build the url.") unless options.is_a?(Hash)
