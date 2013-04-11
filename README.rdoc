@@ -94,7 +94,7 @@ You may page through contacts given a RHapi::ContactAll object
   all.page(5, 100) # Reloads to the 5th page of contacts with 100 per page (the maximum allowed by Hubspot)
   all.previous # Same default rules as next
   all.previous(15) # Page back by 15 contacts
-  all.prev # Alias for recent.previous
+  all.prev # Alias for all.previous
   # You can set the count and vidOffset properties for the object yourself
   all.vidOffset = 100
   all.count = 20
