@@ -225,6 +225,10 @@ To get a single lead with a guid. Assumes the guid has be saved from a previous 
 * Abstracted to allow for multiple api implementations (beyond just leads)
 * Accept oAuth access tokens and prefer them over api keys for non-legacy api calls
 
-== Copyright
+== License
 
-Copyright (c) 2011 Tim Stephenson. See LICENSE.txt for further details.
+Copyright (c) 2013 HubSpot Licensed under the MIT license.
+
+== Contributors
+
+Thoughtfully improved and maintained by @clp-jeremy. Based on the original work of @timstephenson.
