@@ -169,6 +169,7 @@ results:
 ### Leads API Examples
 
 Then to get a list of leads.
+
     leads = RHapi::Lead.find
     leads.each do |lead|
       puts lead.first_name
@@ -179,9 +180,11 @@ Then to get a list of leads.
     end
 
 To find leads named Barny.
+
     leads = RHapi::Lead.find("Barny")
 
 You can also pass additional options to the find method.
+
     options = {
       :sort       => "lastName",          # Possible sort values include: firstName, lastName, email, address, phone, insertedAt, lastConvertedAt, lastModifiedAt, closedAt
       :dir        => "asc",               # Use desc for descending.
@@ -199,17 +202,20 @@ You can also pass additional options to the find method.
     leads = RHapi::Lead.find("Barny", options)
 
 To update a lead.
+
     lead = leads.first
     lead.first_name = "Fred"
     lead.last_name  = "Flintsone"
     lead.update
 
 You can also pass a params hash to update a lead.
+
     params = {:first_name => "Fred", :last_name => "Flintstone", :city => "Bedrock"}
     lead.update(params)
 
 To get a single lead with a guid. Assumes the guid has be saved from a
 previous search.
+
     lead = RHapi::Lead.find_by_guid(lead.guid)
 
 ## Contributing to r_hapi
