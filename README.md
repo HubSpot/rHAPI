@@ -12,9 +12,11 @@ RHapi is a Ruby wrapper for the HubSpot API (HAPI).
 ## Using RHapi 
 
 Install  If you use RVM.
+
     gem install r_hapi
 
 If not you may need to do this:
+
     sudo gem install r_hapi
 
 First configure RHapi to work with your Hubspot API Key or oAuth access token.
