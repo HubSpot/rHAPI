@@ -3,7 +3,7 @@ module RHapi
     VALID_OPTIONS_KEYS = [:api_key, :access_token, :end_point, :hub_spot_site, :version]
     DEFAULT_API_KEY       = nil
     DEFAULT_ACCESS_TOKEN  = nil
-    DEFAULT_END_POINT     = "https://hubapi.com"
+    DEFAULT_END_POINT     = "https://api.hubapi.com"
     DEFAULT_VERSION       = "v1"
     DEFAULT_HUB_SPOT_SITE = nil
     
