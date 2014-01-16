@@ -8,6 +8,7 @@ module RHapi
     def put(url, payload)
       data = payload.to_json
       response = Curl::Easy.http_put(url, data) do |curl| 
+        curl.timeout = RHapi.options[:api_timeout]
         curl.headers["Content-Type"] = "application/json"
         curl.on_failure do |response, err|
           RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
@@ -19,6 +20,7 @@ module RHapi
     def post(url, payload)
       data = payload.to_json
       response = Curl::Easy.http_post(url, data) do |curl| 
+        curl.timeout = RHapi.options[:api_timeout]
         curl.headers["Content-Type"] = "application/json"
         curl.on_failure do |response, err|
           RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
@@ -32,6 +34,7 @@ module RHapi
 
     def http_delete(url) # Namespace to avoid clash with methods which implement delete 
       response = Curl::Easy.http_delete(url) do |curl|
+        curl.timeout = RHapi.options[:api_timeout]
         curl.on_failure do |response, err|
           RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
         end
@@ -86,6 +89,7 @@ module RHapi
       
       def get(url)
         response = Curl::Easy.perform(url) do |curl|
+          curl.timeout = RHapi.options[:api_timeout]
           curl.on_failure do |response, err|
             RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
           end
