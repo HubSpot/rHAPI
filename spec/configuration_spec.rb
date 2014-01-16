@@ -29,8 +29,9 @@ describe "Configuration" do
   it "resets to the default values" do
     RHapi.reset
     RHapi.options[:api_key].should == nil
-    RHapi.options[:end_point].should == "https://hubapi.com"
+    RHapi.options[:end_point].should == "https://api.hubapi.com"
     RHapi.options[:hub_spot_site].should == nil
     RHapi.options[:version].should == "v1"
+    RHapi.options[:api_timeout].should == 0.4
   end
 end
