@@ -19,8 +19,8 @@ Gem::Specification.new do |s|
   s.files = [
     "Gemfile",
     "Gemfile.lock",
-    "LICENSE.txt",
-    "README.rdoc",
+    #"LICENSE.txt",
+    #"README.rdoc",
     "Rakefile",
     "VERSION",
     "lib/r_hapi.rb",
