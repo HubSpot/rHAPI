@@ -24,7 +24,7 @@ Jeweler::Tasks.new do |gem|
   #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
   gem.add_runtime_dependency 'curb', '~> 0.7.12'
-  gem.add_runtime_dependency 'json', '~> 1.5.1'
+  gem.add_runtime_dependency 'json', '>= 1.5.1'
   gem.add_runtime_dependency 'activesupport', '>= 0'
 end
 Jeweler::RubygemsDotOrgTasks.new
@@ -42,7 +42,7 @@ end
 
 task :default => :spec
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
