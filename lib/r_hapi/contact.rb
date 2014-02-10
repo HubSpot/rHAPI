@@ -192,9 +192,8 @@ module RHapi
     # Instance methods -------------------------------------------------------
     # Work with data in the data hash
     def method_missing(method, *args, &block)
-      
-      attribute = ActiveSupport::Inflector.camelize(method.to_s, false)
-  
+      attribute = method.to_s
+
       if attribute =~ /=$/ # Define property -- does not have to exist
         attribute = attribute.chop
         self.changed_attributes[attribute] = args[0]
