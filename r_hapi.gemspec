@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   s.description = %q{Makes it easy to use the HubSpot API in a Ruby application.}
   s.email = %q{tim@raddonline.com}
   s.extra_rdoc_files = [
-    "LICENSE.txt",
-    "README.rdoc"
+    #"LICENSE.txt",
+    #"README.rdoc"
   ]
   s.files = [
     "Gemfile",
