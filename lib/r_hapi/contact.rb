@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'active_support'
 require 'active_support/inflector/inflections'
+require 'active_support/core_ext/hash/slice'
 require File.expand_path('../connection', __FILE__)
 
 module RHapi

@@ -2,18 +2,18 @@ require 'curb'
 require 'json'
 module RHapi
   module Connection
-    
+
     # Instance methods ---------------------------------------------------------------------------  
-      
+
     def put(url, payload)
       data = payload.to_json
       response = Curl::Easy.http_put(url, data) do |curl| 
         curl.headers["Content-Type"] = "application/json"
         curl.on_failure do |response, err|
-          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
+          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}", url, data)
         end
       end
-      RHapi::ConnectionError.raise_error(response.header_str) unless response.response_code.to_s =~ /2\d\d/
+      RHapi::ConnectionError.raise_error(response.header_str, url, data) unless response.response_code.to_s =~ /2\d\d/
     end
 
     def post(url, payload)
@@ -21,10 +21,10 @@ module RHapi
       response = Curl::Easy.http_post(url, data) do |curl| 
         curl.headers["Content-Type"] = "application/json"
         curl.on_failure do |response, err|
-          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
+          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}", url, data)
         end
         curl.on_complete do |response|
-          RHapi::ConnectionError.raise_error(response.header_str) unless response.response_code.to_s =~ /2\d\d/
+          RHapi::ConnectionError.raise_error(response.header_str, url, data) unless response.response_code.to_s =~ /2\d\d/
           response
         end
       end
@@ -33,16 +33,16 @@ module RHapi
     def http_delete(url) # Namespace to avoid clash with methods which implement delete 
       response = Curl::Easy.http_delete(url) do |curl|
         curl.on_failure do |response, err|
-          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
+          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}", url)
         end
       end
-      RHapi::ConnectionError.raise_error(response.header_str) unless response.response_code.to_s =~ /2\d\d/
+      RHapi::ConnectionError.raise_error(response.header_str, url) unless response.response_code.to_s =~ /2\d\d/
     end
 
     # Class methods -----------------------------------------------------------------------------
-    
+
     module ClassMethods
-    
+
       def url_for(route={}, options={})
         if RHapi.options[:api_key].nil? and RHapi.options[:access_token].nil?
           raise(RHapi::ConfigError, "Cannot make call without either oAuth access token or API key.")
@@ -69,12 +69,12 @@ module RHapi
         else
           url << "?access_token=#{RHapi.options[:access_token]}" # not all hubspot APIs support oAuth token calls 
         end
-        
+
         raise(RHapi::UriError, "Options must be a hash in order to build the url.") unless options.is_a?(Hash)
         url << append_options(options) unless options.empty?
         url
-      end 
-      
+      end
+
       def append_options(options)
         query_string = ""
         options.each do |key, value|
@@ -83,19 +83,16 @@ module RHapi
         end
         query_string
       end
-      
+
       def get(url)
         response = Curl::Easy.perform(url) do |curl|
           curl.on_failure do |response, err|
-            RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
+            RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}", url)
           end
         end
-        RHapi::ConnectionError.raise_error(response.header_str) unless response.response_code.to_s =~ /2\d\d/
+        RHapi::ConnectionError.raise_error(response.header_str, url) unless response.response_code.to_s =~ /2\d\d/
         response
       end
-      
     end # End class methods
-
-    
   end
 end
