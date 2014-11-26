@@ -9,32 +9,22 @@ module RHapi
       data = payload.to_json
       response = Curl::Easy.http_put(url, data) do |curl| 
         curl.headers["Content-Type"] = "application/json"
-        curl.on_failure do |response, err|
-          RHapi::ConnectionError.raise_error(response, url, data)
-        end
       end
       RHapi::ConnectionError.raise_error(response, url, data) unless response.response_code.to_s =~ /2\d\d/
+      response
     end
 
     def post(url, payload)
       data = payload.to_json
       response = Curl::Easy.http_post(url, data) do |curl| 
         curl.headers["Content-Type"] = "application/json"
-        curl.on_failure do |response, err|
-          RHapi::ConnectionError.raise_error(response, url, data)
-        end
-        curl.on_complete do |response|
-          RHapi::ConnectionError.raise_error(response, url, data) unless response.response_code.to_s =~ /2\d\d/
-          response
-        end
       end
+      RHapi::ConnectionError.raise_error(response, url, data) unless response.response_code.to_s =~ /2\d\d/
+      response
     end
 
     def http_delete(url) # Namespace to avoid clash with methods which implement delete 
       response = Curl::Easy.http_delete(url) do |curl|
-        curl.on_failure do |response, err|
-          RHapi::ConnectionError.raise_error(response, url)
-        end
       end
       RHapi::ConnectionError.raise_error(response, url) unless response.response_code.to_s =~ /2\d\d/
     end
@@ -86,9 +76,6 @@ module RHapi
 
       def get(url)
         response = Curl::Easy.perform(url) do |curl|
-          curl.on_failure do |response, err|
-            RHapi::ConnectionError.raise_error(response, url)
-          end
         end
         RHapi::ConnectionError.raise_error(response, url) unless response.response_code.to_s =~ /2\d\d/
         response
