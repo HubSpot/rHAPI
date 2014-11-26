@@ -10,10 +10,10 @@ module RHapi
       response = Curl::Easy.http_put(url, data) do |curl| 
         curl.headers["Content-Type"] = "application/json"
         curl.on_failure do |response, err|
-          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}", url, data)
+          RHapi::ConnectionError.raise_error(response, url, data)
         end
       end
-      RHapi::ConnectionError.raise_error(response.header_str, url, data) unless response.response_code.to_s =~ /2\d\d/
+      RHapi::ConnectionError.raise_error(response, url, data) unless response.response_code.to_s =~ /2\d\d/
     end
 
     def post(url, payload)
@@ -21,10 +21,10 @@ module RHapi
       response = Curl::Easy.http_post(url, data) do |curl| 
         curl.headers["Content-Type"] = "application/json"
         curl.on_failure do |response, err|
-          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}", url, data)
+          RHapi::ConnectionError.raise_error(response, url, data)
         end
         curl.on_complete do |response|
-          RHapi::ConnectionError.raise_error(response.header_str, url, data) unless response.response_code.to_s =~ /2\d\d/
+          RHapi::ConnectionError.raise_error(response, url, data) unless response.response_code.to_s =~ /2\d\d/
           response
         end
       end
@@ -33,10 +33,10 @@ module RHapi
     def http_delete(url) # Namespace to avoid clash with methods which implement delete 
       response = Curl::Easy.http_delete(url) do |curl|
         curl.on_failure do |response, err|
-          RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}", url)
+          RHapi::ConnectionError.raise_error(response, url)
         end
       end
-      RHapi::ConnectionError.raise_error(response.header_str, url) unless response.response_code.to_s =~ /2\d\d/
+      RHapi::ConnectionError.raise_error(response, url) unless response.response_code.to_s =~ /2\d\d/
     end
 
     # Class methods -----------------------------------------------------------------------------
@@ -87,10 +87,10 @@ module RHapi
       def get(url)
         response = Curl::Easy.perform(url) do |curl|
           curl.on_failure do |response, err|
-            RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}", url)
+            RHapi::ConnectionError.raise_error(response, url)
           end
         end
-        RHapi::ConnectionError.raise_error(response.header_str, url) unless response.response_code.to_s =~ /2\d\d/
+        RHapi::ConnectionError.raise_error(response, url) unless response.response_code.to_s =~ /2\d\d/
         response
       end
     end # End class methods
