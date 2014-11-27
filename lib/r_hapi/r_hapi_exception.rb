@@ -9,8 +9,9 @@ module RHapi
     end
 
     def message
-      res = self.url+'\n'
-      res += self.payload+'\n'
+      res = 'Hubspot API answered with non-OK:\n'
+      res += self.url+'\n' if url
+      res += self.payload+'\n' if payload
       res += self.response.header_str+'\n' if response
       res += self.response.body_str if response
       res
