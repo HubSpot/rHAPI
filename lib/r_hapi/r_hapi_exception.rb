@@ -2,7 +2,7 @@ module RHapi
   class ConnectionError < StandardError
     attr_accessor :response, :url, :payload
 
-    def initialize(_response, _url, _payload)
+    def initialize(_response=nil, _url=nil, _payload=nil)
       @response = _response
       @url = _url
       @payload = _payload
@@ -11,13 +11,14 @@ module RHapi
     def message
       res = self.url+'\n'
       res += self.payload+'\n'
-      res += self.response.header_str+'\n'
-      res += self.response.body_str
+      res += self.response.header_str+'\n' if response
+      res += self.response.body_str if response
       res
     end
 
     def http_status_code
       # Matches the last HTTP Status - following the HTTP protocol specification 'Status-Line = HTTP-Version SP Status-Code SP Reason-Phrase CRLF'
+      return nil unless response
       statuses = response.header_str.scan(/HTTP\/\d\.\d\s(\d+\s.+)\r\n/).map{ |match|  match[0] }
       statuses.last.strip
     end
@@ -32,5 +33,4 @@ module RHapi
   class UriError < TypeError; end
 
   class AttributeError < TypeError; end
-
 end
