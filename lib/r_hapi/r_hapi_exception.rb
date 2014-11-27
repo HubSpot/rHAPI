@@ -9,7 +9,11 @@ module RHapi
     end
 
     def message
-      self.response.header_str
+      res = self.url+'\n'
+      res += self.payload+'\n'
+      res += self.response.header_str+'\n'
+      res += self.response.body_str
+      res
     end
 
     def http_status_code
