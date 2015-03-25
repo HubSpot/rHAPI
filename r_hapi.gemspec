@@ -55,7 +55,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<bundler>, [">= 1.0.0"])
       s.add_development_dependency(%q<jeweler>, [">= 1.5.2"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
-      s.add_runtime_dependency(%q<curb>, ["~> 0.7.12"])
+      s.add_runtime_dependency(%q<curb>, [">= 0.7.12"])
       s.add_runtime_dependency(%q<json>, [">= 1.5.1"])
       s.add_runtime_dependency(%q<activesupport>, [">= 0"])
     else
@@ -66,7 +66,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<bundler>, [">= 1.0.0"])
       s.add_dependency(%q<jeweler>, [">= 1.5.2"])
       s.add_dependency(%q<rcov>, [">= 0"])
-      s.add_dependency(%q<curb>, ["~> 0.7.12"])
+      s.add_dependency(%q<curb>, [">= 0.7.12"])
       s.add_dependency(%q<json>, [">= 1.5.1"])
       s.add_dependency(%q<activesupport>, [">= 0"])
     end
@@ -78,7 +78,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<bundler>, [">= 1.0.0"])
     s.add_dependency(%q<jeweler>, [">= 1.5.2"])
     s.add_dependency(%q<rcov>, [">= 0"])
-    s.add_dependency(%q<curb>, ["~> 0.7.12"])
+    s.add_dependency(%q<curb>, [">= 0.7.12"])
     s.add_dependency(%q<json>, [">= 1.5.1"])
     s.add_dependency(%q<activesupport>, [">= 0"])
   end
