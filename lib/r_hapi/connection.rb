@@ -13,7 +13,7 @@ module RHapi
           RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
         end
       end
-      RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
+      RHapi::ConnectionError.raise_error(response.header_str) unless response.response_code.to_s =~ /2\d\d/
     end
 
     def post(url, payload)
@@ -24,7 +24,7 @@ module RHapi
           RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
         end
         curl.on_complete do |response|
-          RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
+          RHapi::ConnectionError.raise_error(response.header_str) unless response.response_code.to_s =~ /2\d\d/
           response
         end
       end
@@ -36,7 +36,7 @@ module RHapi
           RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
         end
       end
-      RHapi::ConnectionError.raise_error(response.header_str) unless response.header_str =~ /2\d\d/
+      RHapi::ConnectionError.raise_error(response.header_str) unless response.response_code.to_s =~ /2\d\d/
     end
 
     # Class methods -----------------------------------------------------------------------------
@@ -90,8 +90,7 @@ module RHapi
             RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
           end
         end
-        RHapi::ConnectionError.raise_error( response.header_str) unless response.header_str =~ /2\d\d/
-        RHapi::ConnectionError.raise_error(response.body_str) if response.body_str =~ /Error/i
+        RHapi::ConnectionError.raise_error(response.header_str) unless response.response_code.to_s =~ /2\d\d/
         response
       end
       
