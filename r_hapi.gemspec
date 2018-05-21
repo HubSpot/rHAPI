@@ -44,43 +44,11 @@ Gem::Specification.new do |s|
   s.rubygems_version = "2.1.11"
   s.summary = "A ruby wrapper for the HubSpot API (HAPI)."
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 4
-
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<curb>, ["~> 0.7.12"])
-      s.add_runtime_dependency(%q<json>, [">= 1.5.1"])
-      s.add_runtime_dependency(%q<activesupport>, [">= 0"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.5.0"])
-      s.add_development_dependency(%q<bundler>, [">= 1.0.0"])
-      s.add_development_dependency(%q<jeweler>, [">= 1.5.2"])
-      s.add_development_dependency(%q<rcov>, [">= 0"])
-      s.add_runtime_dependency(%q<curb>, ["~> 0.7.12"])
-      s.add_runtime_dependency(%q<json>, [">= 1.5.1"])
-      s.add_runtime_dependency(%q<activesupport>, [">= 0"])
-    else
-      s.add_dependency(%q<curb>, ["~> 0.7.12"])
-      s.add_dependency(%q<json>, [">= 1.5.1"])
-      s.add_dependency(%q<activesupport>, [">= 0"])
-      s.add_dependency(%q<rspec>, ["~> 2.5.0"])
-      s.add_dependency(%q<bundler>, [">= 1.0.0"])
-      s.add_dependency(%q<jeweler>, [">= 1.5.2"])
-      s.add_dependency(%q<rcov>, [">= 0"])
-      s.add_dependency(%q<curb>, ["~> 0.7.12"])
-      s.add_dependency(%q<json>, [">= 1.5.1"])
-      s.add_dependency(%q<activesupport>, [">= 0"])
-    end
-  else
-    s.add_dependency(%q<curb>, ["~> 0.7.12"])
-    s.add_dependency(%q<json>, [">= 1.5.1"])
-    s.add_dependency(%q<activesupport>, [">= 0"])
-    s.add_dependency(%q<rspec>, ["~> 2.5.0"])
-    s.add_dependency(%q<bundler>, [">= 1.0.0"])
-    s.add_dependency(%q<jeweler>, [">= 1.5.2"])
-    s.add_dependency(%q<rcov>, [">= 0"])
-    s.add_dependency(%q<curb>, ["~> 0.7.12"])
-    s.add_dependency(%q<json>, [">= 1.5.1"])
-    s.add_dependency(%q<activesupport>, [">= 0"])
-  end
+  s.specification_version = 4
+  s.add_runtime_dependency(%q<curb>, ["> 0.7.12"])
+  s.add_runtime_dependency(%q<json>, ["> 1.5.1"])
+  s.add_runtime_dependency(%q<activesupport>, ["> 0"])
+  s.add_development_dependency(%q<rspec>, ["~> 2.5.0"])
+  s.add_development_dependency(%q<bundler>, [">= 1.0.0"])
+  s.add_development_dependency(%q<jeweler>, [">= 1.5.2"])
 end
-
