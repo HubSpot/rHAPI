@@ -90,7 +90,7 @@ module RHapi
             RHapi::ConnectionError.raise_error("#{response.response_code}\n Error is: #{err.inspect}")
           end
         end
-        RHapi::ConnectionError.raise_error(response.header_str) unless response.response_code.to_s =~ /2\d\d/
+        RHapi::ConnectionError.raise_error("#{response.header_str.inspect} #{response.response_code.inspect} #{response.body.inspect}") unless response.response_code.to_s =~ /2\d\d/
         response
       end
       
